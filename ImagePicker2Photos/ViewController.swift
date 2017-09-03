@@ -8,6 +8,8 @@
 
 import UIKit
 
+import Photos
+
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var imageView: UIImageView!

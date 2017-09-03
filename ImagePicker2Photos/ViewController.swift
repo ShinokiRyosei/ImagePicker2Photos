@@ -33,7 +33,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
         let image = info[UIImagePickerControllerOriginalImage] as? UIImage
         imageView.image = image
+
+        // ここからPhotosにアクセス
+        let url: URL? = info[UIImagePickerControllerReferenceURL] as? URL // 画像の保存場所を取得
+        fetchAsset(from: url) // 画像の保存場所を取得して、fetchAssetに渡す
+
+
         dismiss(animated: true, completion: nil)
+    }
+
+    // 画像の保存場所をURL型でもらって、Photosにアクセスするメソッド
+    func fetchAsset(from url: URL?) {
+
+        // optional bingding
+        guard let url: URL = url else {
+
+            return
+        }
+
+        // Photosで画像にアクセス。Locationとかの情報の入ったPHAssetを取得
+        let asset: PHAsset? = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil).firstObject // ここからLocationとかを取得するとよい
+        
     }
 }
 

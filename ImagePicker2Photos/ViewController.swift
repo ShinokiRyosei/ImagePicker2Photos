@@ -12,15 +12,16 @@ import Photos
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView! // 画像を表示するImageView
 
-    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var locationLabel: UILabel! // PHAssetを使って、画像の位置情報を表示するラベル
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
     }
 
+    // UIImagePickerControllerを起動するボタンのメソッド
     @IBAction func didSeletectedPresentImagePickerButton(_ sender: UIButton) {
 
         let controller = UIImagePickerController()
@@ -29,17 +30,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.present(controller, animated: true, completion: nil)
     }
 
+    // UIImagePickerControllerDelegateメソッド
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
 
+        // imageViewに取得した画像を表示
         let image = info[UIImagePickerControllerOriginalImage] as? UIImage
         imageView.image = image
 
         // ここからPhotosにアクセス
         let url: URL? = info[UIImagePickerControllerReferenceURL] as? URL // 画像の保存場所を取得
-        // 画像の保存場所を取得して、fetchAssetに渡して、PHAssetを取得
+        // 画像の保存場所を取得して、fetchAssetに渡して、PHAssetを取得、optional binding
         if let asset: PHAsset = fetchAsset(from: url), let location = asset.location {
 
-            locationLabel.text = "Location: latitude...\(location.coordinate.latitude), longtitude: \(location.coordinate.longitude)"
+            // locationLabelに緯度経度を表示
+            locationLabel.text = "Location: \nlatitude...\(location.coordinate.latitude), \nlongtitude: \(location.coordinate.longitude)"
         }
 
 
@@ -49,7 +53,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // 画像の保存場所をURL型でもらって、Photosにアクセスするメソッド
     func fetchAsset(from url: URL?) -> PHAsset? {
 
-        // optional bingding
+        // optional binding
         guard let url: URL = url else {
 
             return nil
